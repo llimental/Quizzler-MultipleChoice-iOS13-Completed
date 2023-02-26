@@ -2,17 +2,13 @@
 //  QuizBrain.swift
 //  Quizzler-iOS13
 //
-//  Created by Angela Yu on 08/08/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
+//  Created by lust3r on 2023/02/26.
+//  Copyright © 2023 The App Brewery. All rights reserved.
 //
 
 import Foundation
 
 struct QuizBrain {
-    
-    var questionNumber = 0
-    var score = 0
-    
     let quiz = [
         Question(q: "Which is the largest organ in the human body?", a: ["Heart", "Skin", "Large Intestine"], correctAnswer: "Skin"),
         Question(q: "Five dollars is worth how many nickels?", a: ["25", "50", "100"], correctAnswer: "100"),
@@ -24,42 +20,29 @@ struct QuizBrain {
         Question(q: "What alcoholic drink is made from molasses?", a: ["Rum", "Whisky", "Gin"], correctAnswer: "Rum"),
         Question(q: "What type of animal was Harambe?", a: ["Panda", "Gorilla", "Crocodile"], correctAnswer: "Gorilla"),
         Question(q: "Where is Tasmania located?", a: ["Indonesia", "Australia", "Scotland"], correctAnswer: "Australia")
+
     ]
-    
-    func getQuestionText() -> String {
-        return quiz[questionNumber].text
-    }
-    
-    //Need a way of fetching the answer choices.
-    func getAnswers() -> [String] {
-        return quiz[questionNumber].answers
-    }
-    
-    func getProgress() -> Float {
-        return Float(questionNumber) / Float(quiz.count)
-    }
-    
-    mutating func getScore() -> Int {
-        return score
-    }
-    
-     mutating func nextQuestion() {
-        
-        if questionNumber + 1 < quiz.count {
+
+    var questionNumber = 0
+    var correctNumber = 0
+
+    func checkAnswer(_ userAnswer: String) -> Bool { userAnswer == quiz[questionNumber].correctAnswer ? true : false }
+
+    func getQuestionText() -> String { quiz[questionNumber].text }
+
+    func getQuestionAnswer() -> [String] { quiz[questionNumber].answer }
+
+    func getProgress() -> Float { Float(questionNumber + 1) / Float(quiz.count) }
+
+    func getScore() -> Int { correctNumber }
+
+    mutating func nextQuestion() {
+        if questionNumber < quiz.count - 1 {
+            correctNumber += 1
             questionNumber += 1
         } else {
+            correctNumber = 0
             questionNumber = 0
         }
     }
-    
-    mutating func checkAnswer(userAnswer: String) -> Bool {
-        //Need to change answer to rightAnswer here. 
-        if userAnswer == quiz[questionNumber].rightAnswer {
-            score += 1
-            return true
-        } else {
-            return false
-        }
-    }
 }
-
